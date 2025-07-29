@@ -332,13 +332,14 @@ export default {
           "自动判断客户端": "auto",
         },
         shortTypes: {
+          "d.yjhup.com": "https://d.yjhup.com/short",
           "v1.mk": "https://v1.mk/short",
           "d1.mk": "https://d1.mk/short",
           "dlj.tf": "https://dlj.tf/short",
           "suo.yt": "https://suo.yt/short",
         },
         customBackend: {
-          "自用专属后端": "http://subapi.yjhup.com/",
+          "自用专属后端": "http://http://subapi2.yjhup.com:25500",
           "CM负载均衡后端【vless reality+hy1+hy2】": "https://subapi.cmliussss.net",
           "CM应急备用后端【vless reality+hy1+hy2】": "https://subapi.fxxk.dedyn.io",
           "肥羊增强型后端【vless reality+hy1+hy2】": "https://url.v1.mk",
@@ -348,6 +349,7 @@ export default {
           "sub-web作者提供": "https://api.wcc.best",
         },
         backendOptions: [
+          { value: "http://http://subapi2.yjhup.com:25500" },
           { value: "https://subapi.cmliussss.net" },
           { value: "https://subapi.fxxk.dedyn.io" },
           { value: "https://url.v1.mk" },
