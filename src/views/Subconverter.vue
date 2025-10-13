@@ -365,6 +365,10 @@ export default {
               {
                 label: "自建规则",
                 value: "https://raw.githubusercontent.com/YJHxx2561/rules-for-clash/refs/heads/main/yjhclash-blackmatrix7.ini"
+              },
+              {
+                label: "自建规则-短链",
+                value: "https://sink.yjhup.com/clashconfig"
               }
             ]
           },
@@ -1322,4 +1326,5 @@ export default {
   }
 };
 </script>
+
 
