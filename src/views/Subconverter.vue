@@ -350,7 +350,8 @@ export default {
           "sub-web作者提供": "https://api.wcc.best",
         },
         backendOptions: [
-          { value: "http://subapi2.yjhup.com:25500" },
+          { value: "https://jpmsubapi.yjhup.com" },
+          { value: "https://subapi.hk.yjhup.com" },
           { value: "https://subapi.cmliussss.net" },
           { value: "https://subapi.fxxk.dedyn.io" },
           { value: "https://url.v1.mk" },
@@ -377,7 +378,7 @@ export default {
               },
               {
                 label: "自建规则-easyclash-短链",
-                value: "https://raw.githubusercontent.com/YJHxx2561/rules-for-clash/refs/heads/main/clash-easy-config.ini"
+                value: "https://sink.yjhup.com/clashconfig"
               }
             ]
           },
@@ -812,8 +813,8 @@ export default {
         sourceSubUrl: "",
         clientType: "",
         customBackend: this.getUrlParam() == "" ? "https://url.v1.mk" : this.getUrlParam(),
-        shortType: "https://v1.mk/short",
-        remoteConfig: "https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online.ini",
+        shortType: "https://short.yjhup.com/api/v1/short_links",
+        remoteConfig: "https://raw.githubusercontent.com/YJHxx2561/rules-for-clash/refs/heads/main/yjhclash-blackmatrix7.ini",
         excludeRemarks: "",
         includeRemarks: "",
         filename: "",
@@ -1115,7 +1116,7 @@ export default {
         if (res.data && res.data.code === 0 && res.data.data?.short_url) {
           this.customShortSubUrl = res.data.data.short_url;
           this.$copyText(res.data.data.short_url);
-          this.$message.success.success("短链接已已复制到剪贴板板（IOS设备和Safari需手动手动点击复制）");
+          this.$message.success("短链接已已复制到剪贴板板（IOS设备和Safari需手动手动点击复制）");
         } else {
           this.$message.error(`短链接获取失败：${res.data?.message || "API返回格式错误"}`);
         }
@@ -1386,6 +1387,7 @@ export default {
   }
 };
 </script>
+
 
 
 
