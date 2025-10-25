@@ -812,7 +812,7 @@ export default {
       form: {
         sourceSubUrl: "",
         clientType: "",
-        customBackend: this.getUrlParam() == "" ? "https://url.v1.mk" : this.getUrlParam(),
+        customBackend: this.getUrlParam() == "" ? "https://jpmsubapi.yjhup.com" : this.getUrlParam(),
         shortType: "https://short.yjhup.com/api/v1/short_links",
         remoteConfig: "https://raw.githubusercontent.com/YJHxx2561/rules-for-clash/refs/heads/main/yjhclash-blackmatrix7.ini",
         excludeRemarks: "",
@@ -1387,6 +1387,7 @@ export default {
   }
 };
 </script>
+
 
 
 
