@@ -1074,9 +1074,8 @@ export default {
       this.$message.success("定制订阅已复制到剪贴板");
     },
     makeShortUrl() {
-  // 你的短链服务API地址
+  // 你的短链服务配置（仅修改这里的参数即可，其他逻辑不动）
   const yourApiDomain = "https://short.yjhup.com/api/v1/short_links";
-  // 你的API密钥
   const yourApiToken = "086e963a480731a70d79a4c74c435deade46ca1bd3a0d1ff315908353231c456";
 
   let duan = this.form.shortType === "" ? shortUrlBackend : this.form.shortType;
@@ -1095,12 +1094,12 @@ export default {
   // 自动生成随机短码（如果用户未输入自定义短码）
   const shortCode = this.customShortSubUrl.trim() || generateRandomCode();
 
-  // 区分你的服务和其他服务
+  // 区分你的服务和其他服务，分别处理
   if (duan.includes(yourApiDomain)) {
-    // 你的短链服务请求逻辑（JSON格式）
+    // 👉 你的短链服务逻辑（适配你的返回格式）
     const requestData = {
       original_url: this.customSubUrl,
-      domain: "short.yjhup.com", // 你的短链域名
+      domain: "short.yjhup.com",
       ...(shortCode && shortCode.indexOf("http") < 0 && { custom_code: shortCode })
     };
 
@@ -1108,28 +1107,28 @@ export default {
       .post(duan, requestData, {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
-          "Authorization": `Bearer ${yourApiToken}` // 携带API密钥
+          "Authorization": `Bearer ${yourApiToken}`
         }
       })
       .then(res => {
-        // 假设你的API成功返回格式为 { "short_url": "https://short.yjhup.com/abc123" }
-        if (res.data && res.data.short_url) {
-          this.customShortSubUrl = res.data.short_url;
-          this.$copyText(res.data.short_url);
-          this.$message.success("短链接已复制到剪贴板（IOS设备和Safari浏览器需手动点击复制）");
+        // 严格的API返回API返回格式格式：code=0 且 data.short_url存在
+        if (res.data && res.data.code === 0 && res.data.data?.short_url) {
+          this.customShortSubUrl = res.data.data.short_url;
+          this.$copyText(res.data.data.short_url);
+          this.$message.success.success("短链接已已复制到剪贴板板（IOS设备和Safari需手动手动点击复制）");
         } else {
-          this.$message.error("短链接获取失败：API返回格式不正确");
+          this.$message.error(`短链接获取失败：${res.data?.message || "API返回格式错误"}`);
         }
       })
       .catch(err => {
-        const errMsg = err.response?.data?.message || "网络错误，请重试";
+        const errMsg = err.response?.data?.message || err.message || "网络错误";
         this.$message.error(`短链接获取失败：${errMsg}`);
       })
       .finally(() => {
         this.loading1 = false;
       });
   } else {
-    // 其他短链服务的原有逻辑
+    // 👉 其他短链服务的原有逻辑（完全保留，不做任何修改）
     let data = new FormData();
     data.append("longUrl", btoa(this.customSubUrl));
     if (shortCode && shortCode.indexOf("http") < 0) {
@@ -1387,6 +1386,7 @@ export default {
   }
 };
 </script>
+
 
 
 
