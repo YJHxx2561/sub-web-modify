@@ -332,14 +332,15 @@ export default {
           "自动判断客户端": "auto",
         },
         shortTypes: {
-          "d.yjhup.com": "https://d.yjhup.com/short",
+          "short.yjhup.com": "https://short.yjhup.com/api/v1/short_links",
           "v1.mk": "https://v1.mk/short",
           "d1.mk": "https://d1.mk/short",
           "dlj.tf": "https://dlj.tf/short",
           "suo.yt": "https://suo.yt/short",
         },
         customBackend: {
-          "自用专属后端": "https://jpmsubapi.yjhup.com",
+          "JPM后端": "https://jpmsubapi.yjhup.com",
+          "麦块后端": "https://subapi.hk.yjhup.com",
           "CM负载均衡后端【vless reality+hy1+hy2】": "https://subapi.cmliussss.net",
           "CM应急备用后端【vless reality+hy1+hy2】": "https://subapi.fxxk.dedyn.io",
           "肥羊增强型后端【vless reality+hy1+hy2】": "https://url.v1.mk",
@@ -369,6 +370,14 @@ export default {
               {
                 label: "自建规则-短链",
                 value: "https://sink.yjhup.com/clashconfig"
+              }，
+              {
+                label: "自建规则-easyclash",
+                value: "https://raw.githubusercontent.com/YJHxx2561/rules-for-clash/refs/heads/main/clash-easy-config.ini"
+              },
+              {
+                label: "自建规则-easyclash-短链",
+                value: "https://raw.githubusercontent.com/YJHxx2561/rules-for-clash/refs/heads/main/clash-easy-config.ini"
               }
             ]
           },
@@ -1065,38 +1074,90 @@ export default {
       this.$message.success("定制订阅已复制到剪贴板");
     },
     makeShortUrl() {
-      let duan =
-        this.form.shortType === ""
-          ? shortUrlBackend
-          : this.form.shortType;
-      this.loading1 = true;
-      let data = new FormData();
-      data.append("longUrl", btoa(this.customSubUrl));
-      if (this.customShortSubUrl.trim() != "") {
-        data.append("shortKey", this.customShortSubUrl.trim().indexOf("http") < 0 ? this.customShortSubUrl.trim() : "");
-      }
-      this.$axios
-        .post(duan, data, {
-          header: {
-            "Content-Type": "application/form-data; charset=utf-8"
-          }
-        })
-        .then(res => {
-          if (res.data.Code === 1 && res.data.ShortUrl !== "") {
-            this.customShortSubUrl = res.data.ShortUrl;
-            this.$copyText(res.data.ShortUrl);
-            this.$message.success("短链接已复制到剪贴板（IOS设备和Safari浏览器不支持自动复制API，需手动点击复制按钮）");
-          } else {
-            this.$message.error("短链接获取失败：" + res.data.Message);
-          }
-        })
-        .catch(() => {
-          this.$message.error("短链接获取失败");
-        })
-        .finally(() => {
-          this.loading1 = false;
-        });
-    },
+  // 你的短链服务API地址
+  const yourApiDomain = "https://short.yjhup.com/api/v1/short_links";
+  // 你的API密钥
+  const yourApiToken = "086e963a480731a70d79a4c74c435deade46ca1bd3a0d1ff315908353231c456";
+
+  let duan = this.form.shortType === "" ? shortUrlBackend : this.form.shortType;
+  this.loading1 = true;
+
+  // 生成6位随机字母数字字符（包含大小写字母和数字）
+  const generateRandomCode = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < 6; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  };
+
+  // 自动生成随机短码（如果用户未输入自定义短码）
+  const shortCode = this.customShortSubUrl.trim() || generateRandomCode();
+
+  // 区分你的服务和其他服务
+  if (duan.includes(yourApiDomain)) {
+    // 你的短链服务请求逻辑（JSON格式）
+    const requestData = {
+      original_url: this.customSubUrl,
+      domain: "short.yjhup.com", // 你的短链域名
+      ...(shortCode && shortCode.indexOf("http") < 0 && { custom_code: shortCode })
+    };
+
+    this.$axios
+      .post(duan, requestData, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "Authorization": `Bearer ${yourApiToken}` // 携带API密钥
+        }
+      })
+      .then(res => {
+        // 假设你的API成功返回格式为 { "short_url": "https://short.yjhup.com/abc123" }
+        if (res.data && res.data.short_url) {
+          this.customShortSubUrl = res.data.short_url;
+          this.$copyText(res.data.short_url);
+          this.$message.success("短链接已复制到剪贴板（IOS设备和Safari浏览器需手动点击复制）");
+        } else {
+          this.$message.error("短链接获取失败：API返回格式不正确");
+        }
+      })
+      .catch(err => {
+        const errMsg = err.response?.data?.message || "网络错误，请重试";
+        this.$message.error(`短链接获取失败：${errMsg}`);
+      })
+      .finally(() => {
+        this.loading1 = false;
+      });
+  } else {
+    // 其他短链服务的原有逻辑
+    let data = new FormData();
+    data.append("longUrl", btoa(this.customSubUrl));
+    if (shortCode && shortCode.indexOf("http") < 0) {
+      data.append("shortKey", shortCode);
+    }
+    this.$axios
+      .post(duan, data, {
+        headers: {
+          "Content-Type": "application/form-data; charset=utf-8"
+        }
+      })
+      .then(res => {
+        if (res.data.Code === 1 && res.data.ShortUrl !== "") {
+          this.customShortSubUrl = res.data.ShortUrl;
+          this.$copyText(res.data.ShortUrl);
+          this.$message.success("短链接已复制到剪贴板（IOS设备和Safari浏览器需手动点击复制）");
+        } else {
+          this.$message.error("短链接获取失败：" + res.data.Message);
+        }
+      })
+      .catch(() => {
+        this.$message.error("短链接获取失败");
+      })
+      .finally(() => {
+        this.loading1 = false;
+      });
+  }
+}
     confirmUploadConfig() {
       this.loading2 = true;
       let data = new FormData();
@@ -1326,5 +1387,6 @@ export default {
   }
 };
 </script>
+
 
 
