@@ -370,7 +370,7 @@ export default {
               {
                 label: "自建规则-短链",
                 value: "https://sink.yjhup.com/clashconfig"
-              }，
+              },
               {
                 label: "自建规则-easyclash",
                 value: "https://raw.githubusercontent.com/YJHxx2561/rules-for-clash/refs/heads/main/clash-easy-config.ini"
@@ -1387,6 +1387,7 @@ export default {
   }
 };
 </script>
+
 
 
 
