@@ -1157,7 +1157,7 @@ export default {
         this.loading1 = false;
       });
   }
-}
+},
     confirmUploadConfig() {
       this.loading2 = true;
       let data = new FormData();
@@ -1387,6 +1387,7 @@ export default {
   }
 };
 </script>
+
 
 
 
