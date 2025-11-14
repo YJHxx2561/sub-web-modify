@@ -340,7 +340,7 @@ export default {
         },
         customBackend: {
           "JPM后端": "https://jpmsubapi.yjhup.com",
-          "麦块后端": "https://subapi.hk.yjhup.com",
+          "HK后端": "https://subapi.hk.yjhup.com",
           "CM负载均衡后端【vless reality+hy1+hy2】": "https://subapi.cmliussss.net",
           "CM应急备用后端【vless reality+hy1+hy2】": "https://subapi.fxxk.dedyn.io",
           "肥羊增强型后端【vless reality+hy1+hy2】": "https://url.v1.mk",
@@ -1387,6 +1387,7 @@ export default {
   }
 };
 </script>
+
 
 
 
