@@ -35,12 +35,12 @@
               </el-form-item>
               <el-form-item label="后端地址:">
                 <el-select v-model="form.customBackend" allow-create filterable @change="selectChanged"
-                  placeholder="可输入自己的后端" style="width: 100%">
+                  placeholder="https://subapi.o.yjhup.com" style="width: 100%">
                   <el-option v-for="(v, k) in options.customBackend" :key="k" :label="k" :value="v"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="短链选择:">
-                <el-select v-model="form.shortType" allow-create filterable placeholder="可输入其他可用短链API"
+                <el-select v-model="form.shortType" allow-create filterable placeholder="https://short.yjhup.com/api/v1/short_links"
                   style="width: 100%">
                   <el-option v-for="(v, k) in options.shortTypes" :key="k" :label="k" :value="v"></el-option>
                 </el-select>
@@ -343,23 +343,49 @@ export default {
           "自动判断客户端": "auto",
         },
         shortTypes: {
+          "short.yjhup.com": "https://short.yjhup.com/api/v1/short_links",
           "v1.mk": "https://v1.mk/short",
           "d1.mk": "https://d1.mk/short",
           "dlj.tf": "https://dlj.tf/short",
         },
         customBackend: {
+          "JP后端": "https://subapi.o.yjhup.com",
+          "HK后端": "https://subapi.hk.yjhup.com",
           "CM提供-负载均衡后端": "https://subapi.cmliussss.net",
           "CM提供-应急备用后端": "https://subapi.fxxk.dedyn.io",
           "肥羊提供-增强型后端": "https://url.v1.mk",
           "肥羊提供-备用后端": "https://api.v1.mk",
         },
         backendOptions: [
+          { label: "JP后端", value: "https://subapi.o.yjhup.com" },
+          { label: "HK后端", value: "https://subapi.hk.yjhup.com" },
           { value: "https://subapi.cmliussss.net" },
           { value: "https://subapi.fxxk.dedyn.io" },
           { value: "https://url.v1.mk" },
           { value: "https://api.v1.mk" },
         ],
         remoteConfig: [
+                    {
+            label: "自建规则",
+            options: [
+              {
+                label: "自建规则",
+                value: "https://raw.githubusercontent.com/YJHxx2561/rules-for-clash/refs/heads/main/yjhclash-blackmatrix7.ini"
+              },
+              {
+                label: "自建规则-短链",
+                value: "https://sink.yjhup.com/clashconfig"
+              },
+              {
+                label: "自建规则-easyclash",
+                value: "https://raw.githubusercontent.com/YJHxx2561/rules-for-clash/refs/heads/main/clash-easy-config.ini"
+              },
+              {
+                label: "自建规则-easyclash-短链",
+                value: "https://sink.yjhup.com/clashconfig"
+              }
+            ]
+          },
           {
             label: "CM规则",
             options: [
@@ -790,9 +816,9 @@ export default {
       form: {
         sourceSubUrl: "",
         clientType: "",
-        customBackend: this.getUrlParam() == "" ? "https://url.v1.mk" : this.getUrlParam(),
-        shortType: "https://v1.mk/short",
-        remoteConfig: "https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online.ini",
+        customBackend: this.getUrlParam() == "" ? "https://subapi.o.yjhup.com" : this.getUrlParam(),
+        shortType: "https://short.yjhup.com/api/v1/short_links",
+        remoteConfig: "https://raw.githubusercontent.com/YJHxx2561/rules-for-clash/refs/heads/main/yjhclash-blackmatrix7.ini",
         excludeRemarks: "",
         includeRemarks: "",
         filename: "",
