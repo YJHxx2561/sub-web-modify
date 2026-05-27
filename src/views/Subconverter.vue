@@ -1076,37 +1076,81 @@ export default {
       this.$message.success("定制订阅已复制到剪贴板");
     },
     makeShortUrl() {
-      let duan =
-        this.form.shortType === ""
-          ? shortUrlBackend
-          : this.form.shortType;
+      const yjhShortUrlDomain = "https://short.yjhup.com/api/v1/short_links";
+      const yjhApiToken = "086e963a480731a70d79a4c74c435deade46ca1bd3a0d1ff315908353231c456";
+
+      let duan = this.form.shortType === "" ? shortUrlBackend : this.form.shortType;
       this.loading1 = true;
-      let data = new FormData();
-      data.append("longUrl", btoa(this.customSubUrl));
-      if (this.customShortSubUrl.trim() != "") {
-        data.append("shortKey", this.customShortSubUrl.trim().indexOf("http") < 0 ? this.customShortSubUrl.trim() : "");
+
+      const generateRandomCode = () => {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < 6; i++) {
+          result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return result;
+      };
+
+      const shortCode = this.customShortSubUrl.trim() || generateRandomCode();
+
+      if (duan.includes(yjhShortUrlDomain)) {
+        const requestData = {
+          original_url: this.customSubUrl,
+          domain: "short.yjhup.com",
+          ...(shortCode && shortCode.indexOf("http") < 0 && { custom_code: shortCode })
+        };
+
+        this.$axios
+          .post(duan, requestData, {
+            headers: {
+              "Content-Type": "application/json; charset=utf-8",
+              "Authorization": `Bearer ${yjhApiToken}`
+            }
+          })
+          .then(res => {
+            if (res.data && res.data.code === 0 && res.data.data?.short_url) {
+              this.customShortSubUrl = res.data.data.short_url;
+              this.$copyText(res.data.data.short_url);
+              this.$message.success("短链接已复制到剪贴板（IOS设备和Safari需手动点击复制）");
+            } else {
+              this.$message.error(`短链接获取失败：${res.data?.message || "API返回格式错误"}`);
+            }
+          })
+          .catch(err => {
+            const errMsg = err.response?.data?.message || err.message || "网络错误";
+            this.$message.error(`短链接获取失败：${errMsg}`);
+          })
+          .finally(() => {
+            this.loading1 = false;
+          });
+      } else {
+        let data = new FormData();
+        data.append("longUrl", btoa(this.customSubUrl));
+        if (shortCode && shortCode.indexOf("http") < 0) {
+          data.append("shortKey", shortCode);
+        }
+        this.$axios
+          .post(duan, data, {
+            headers: {
+              "Content-Type": "application/form-data; charset=utf-8"
+            }
+          })
+          .then(res => {
+            if (res.data.Code === 1 && res.data.ShortUrl !== "") {
+              this.customShortSubUrl = res.data.ShortUrl;
+              this.$copyText(res.data.ShortUrl);
+              this.$message.success("短链接已复制到剪贴板（IOS设备和Safari浏览器需手动点击复制）");
+            } else {
+              this.$message.error("短链接获取失败：" + res.data.Message);
+            }
+          })
+          .catch(() => {
+            this.$message.error("短链接获取失败");
+          })
+          .finally(() => {
+            this.loading1 = false;
+          });
       }
-      this.$axios
-        .post(duan, data, {
-          header: {
-            "Content-Type": "application/form-data; charset=utf-8"
-          }
-        })
-        .then(res => {
-          if (res.data.Code === 1 && res.data.ShortUrl !== "") {
-            this.customShortSubUrl = res.data.ShortUrl;
-            this.$copyText(res.data.ShortUrl);
-            this.$message.success("短链接已复制到剪贴板（IOS设备和Safari浏览器不支持自动复制API，需手动点击复制按钮）");
-          } else {
-            this.$message.error("短链接获取失败：" + res.data.Message);
-          }
-        })
-        .catch(() => {
-          this.$message.error("短链接获取失败");
-        })
-        .finally(() => {
-          this.loading1 = false;
-        });
     },
     confirmUploadConfig() {
       this.loading2 = true;
