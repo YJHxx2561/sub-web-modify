@@ -816,7 +816,7 @@ export default {
         clientType: "",
         customBackend: this.getUrlParam() == "" ? "https://subapi.o.yjhup.com" : this.getUrlParam(),
         shortType: "https://short.yjhup.com/api/v1/short_links",
-        remoteConfig: https://raw.githubusercontent.com/YJHxx2561/rules-for-clash/refs/heads/main/yjhclash-blackmatrix7.ini",
+        remoteConfig: "https://raw.githubusercontent.com/YJHxx2561/rules-for-clash/refs/heads/main/yjhclash-blackmatrix7.ini",
         excludeRemarks: "",
         includeRemarks: "",
         filename: "",
