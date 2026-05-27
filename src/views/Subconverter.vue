@@ -347,7 +347,9 @@ export default {
           "d1.mk": "https://d1.mk/short",
           "dlj.tf": "https://dlj.tf/short",
         },
-        customBackend: {
+        customBackend:
+"JP后端": "https://subapi.o.yjhup.com",
+          "HK后端": "https://subapi.hk.yjhup.com",
           "CM提供-负载均衡后端": "https://subapi.cmliussss.net",
           "CM提供-应急备用后端": "https://subapi.fxxk.dedyn.io",
           "肥羊提供-增强型后端": "https://url.v1.mk",
@@ -360,6 +362,27 @@ export default {
           { value: "https://api.v1.mk" },
         ],
         remoteConfig: [
+                    {
+            label: "自建规则",
+            options: [
+              {
+                label: "自建规则",
+                value: "https://raw.githubusercontent.com/YJHxx2561/rules-for-clash/refs/heads/main/yjhclash-blackmatrix7.ini"
+              },
+              {
+                label: "自建规则-短链",
+                value: "https://sink.yjhup.com/clashconfig"
+              },
+              {
+                label: "自建规则-easyclash",
+                value: "https://raw.githubusercontent.com/YJHxx2561/rules-for-clash/refs/heads/main/clash-easy-config.ini"
+              },
+              {
+                label: "自建规则-easyclash-短链",
+                value: "https://sink.yjhup.com/clashconfig"
+              }
+            ]
+          },
           {
             label: "CM规则",
             options: [
