@@ -347,7 +347,7 @@ export default {
           "d1.mk": "https://d1.mk/short",
           "dlj.tf": "https://dlj.tf/short",
         },
-        customBackend:
+        customBackend: {
 "JP后端": "https://subapi.o.yjhup.com",
           "HK后端": "https://subapi.hk.yjhup.com",
           "CM提供-负载均衡后端": "https://subapi.cmliussss.net",
