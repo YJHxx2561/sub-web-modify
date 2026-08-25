@@ -45,3 +45,26 @@ svg {
 #app {
   min-height: 100vh;
 }
+
+/* ---------- 全局移除点击/聚焦时的浏览器蓝色焦点框 ----------
+ * focus-visible 在现代浏览器（键盘tab / 鼠标点击）都会触发蓝色轮廓，
+ * 只写 outline:none 不够，必须同时覆盖 focus-visible，
+ * 并配通用 * 选择器 + !important 保证所有控件（含 element-ui 组件）都不再出现蓝框。
+ */
+*:focus,
+*:focus-visible {
+  outline: none !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+}
+
+a:focus,
+a:focus-visible {
+  outline: none !important;
+}
+
+/* 安卓 Chrome 触摸点击的一闪半透明蓝色蒙层/圆角高亮 */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
