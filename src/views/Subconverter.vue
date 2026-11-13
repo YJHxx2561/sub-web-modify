@@ -35,7 +35,7 @@
               </el-form-item>
               <el-form-item label="后端地址:">
                 <el-select v-model="form.customBackend" allow-create filterable @change="selectChanged"
-                  placeholder="https://subapi.o.yjhup.com" style="width: 100%">
+                  placeholder="https://sub.sad.hk.yjhup.com" style="width: 100%">
                   <el-option v-for="(v, k) in options.customBackend" :key="k" :label="k" :value="v"></el-option>
                 </el-select>
               </el-form-item>
@@ -349,7 +349,7 @@ export default {
           "dlj.tf": "https://dlj.tf/short",
         },
         customBackend: {
-          "JP后端": "https://subapi.o.yjhup.com",
+          "sad-hk后端": "https://sub.sad.hk.yjhup.com",
           "HK后端": "https://subapi.hk.yjhup.com",
           "CM提供-负载均衡后端": "https://subapi.cmliussss.net",
           "CM提供-应急备用后端": "https://subapi.fxxk.dedyn.io",
@@ -357,7 +357,7 @@ export default {
           "肥羊提供-备用后端": "https://api.v1.mk",
         },
         backendOptions: [
-          { label: "JP后端", value: "https://subapi.o.yjhup.com" },
+          { label: "sad-hk后端", value: "https://sub.sad.hk.yjhup.com" },
           { label: "HK后端", value: "https://subapi.hk.yjhup.com" },
           { value: "https://subapi.cmliussss.net" },
           { value: "https://subapi.fxxk.dedyn.io" },
@@ -816,7 +816,7 @@ export default {
       form: {
         sourceSubUrl: "",
         clientType: "",
-        customBackend: this.getUrlParam() == "" ? "https://subapi.o.yjhup.com" : this.getUrlParam(),
+        customBackend: this.getUrlParam() == "" ? "https://sub.sad.hk.yjhup.com" : this.getUrlParam(),
         shortType: "https://short.yjhup.com/api/v1/short_links",
         remoteConfig: "https://raw.githubusercontent.com/YJHxx2561/rules/refs/heads/main/ini/yjhclash-blackmatrix7.ini",
         excludeRemarks: "",
